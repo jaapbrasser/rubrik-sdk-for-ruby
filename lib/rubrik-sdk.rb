@@ -97,3 +97,34 @@ class VMware_VM
         end
     end
 end
+
+class ClusterConnection
+    def self.connectBasicAuth(clusterName:, logging: 'WARN', userName:, password:)
+        $logger.debug("Executing method '#{__method__.to_s}', method of '#{self.name.to_s}' class")
+
+        if (logging.to_s) == "debug"
+            $logger.level = Logger::DEBUG
+        else
+            $logger.level = Logger::WARN
+        end
+
+        uristring = "https://" + clusterName + "/api/v1/session"
+        
+        uri = URI.parse(uristring)
+        $logger.debug("URI used: " + uri.to_s)
+
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+        header = {}
+        header['Authorization'] = 'Basic ' + Base64.encode64("#{userName.to_s}:#{password.to_s}").chop
+
+        result = http.post(uri.request_uri,'',header)
+        $logger.debug("HTTP status code: " + result.code)
+        
+        $rubrikConnection = {}
+        $rubrikConnection['token'] = (JSON.parse(result.response.body))['token']
+        $rubrikConnection['clusterName'] = clusterName.to_s
+    end
+end
