@@ -43,11 +43,11 @@ class Cluster
         puts result.response.body
     end
 
-    def self.getClusterInfo(clusterName)
+    def self.getClusterInfo()
         $logger.debug("Executing method '#{__method__.to_s}', method of '#{self.name.to_s}' class")
 
         if defined?($rubrikConnection)
-            uristring = "https://" + clusterName + "/api/v1/cluster/me"
+            uristring = "https://#{$rubrikConnection['clusterName']}/api/v1/cluster/me"
             
             uri = URI.parse(uristring)
             $logger.debug("URI used: " + uri.to_s)
@@ -73,7 +73,7 @@ class VMware_VM
     def self.getVM(clusterName,name)
         $logger.debug("Executing method '#{__method__.to_s}', method of '#{self.name.to_s}' class")
         if defined?($rubrikConnection)
-            uristring = "https://" + $rubrikConnection['clusterName'] + "/api/v1/vmware/vm"
+            uristring = "https://#{$rubrikConnection['clusterName']}/api/v1/cluster/me"
             
             uri = URI.parse(uristring)
             params = { :name => "#{name.to_s}", :primary_cluster_id => 'local'}
