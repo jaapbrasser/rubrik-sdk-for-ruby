@@ -127,4 +127,12 @@ class ClusterConnection
         $rubrikConnection['token'] = (JSON.parse(result.response.body))['token']
         $rubrikConnection['clusterName'] = clusterName.to_s
     end
+
+    def self.connected?
+        if defined?($rubrikConnection)
+            true
+        else
+            false
+        end
+    end
 end
