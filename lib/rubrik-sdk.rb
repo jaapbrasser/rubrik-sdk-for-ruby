@@ -128,6 +128,20 @@ class ClusterConnection
         $rubrikConnection['clusterName'] = clusterName.to_s
     end
 
+    def self.connectToken(clusterName:, logging: 'WARN', apiToken:)
+        $logger.debug("Executing method '#{__method__.to_s}', method of '#{self.name.to_s}' class")
+
+        if (logging.to_s) == "debug"
+            $logger.level = Logger::DEBUG
+        else
+            $logger.level = Logger::WARN
+        end
+
+        $rubrikConnection = {}
+        $rubrikConnection['token'] = apiToken.to_s
+        $rubrikConnection['clusterName'] = clusterName.to_s
+    end
+
     def self.connected?
         if defined?($rubrikConnection)
             true
