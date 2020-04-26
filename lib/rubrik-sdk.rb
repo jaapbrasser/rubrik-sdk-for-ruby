@@ -172,6 +172,8 @@ class ClusterConnection
 
         header = {}
         header['Authorization'] = 'Basic ' + Base64.encode64("#{userName.to_s}:#{password.to_s}").chop
+        header['User-Agent'] = self.userAgentString().to_s
+        $logger.debug("User-Agent string: #{header['User-Agent']}")
 
         result = http.post(uri.request_uri,'',header)
         $logger.debug("HTTP status code: " + result.code)
@@ -201,5 +203,9 @@ class ClusterConnection
         else
             false
         end
+    end
+
+    def self.userAgentString()
+        "RubrikRubySDK-0.0.1"
     end
 end
